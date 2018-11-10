@@ -1,0 +1,41 @@
+----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+### 2018.11.10
+# Error
+- 오류 발생 경로
+test/.../domain/posts/PostsRepositoryTest.java
+
+- 오류 메시지
+cannot find symbol
+symbol: method builder()
+location: ~~~
+
+- 원인 및 해결방법
+Lombok을 쓰겠다고는 했지만, 컴파일 시에 Lombok이 적용되지 않았던 문제로,
+IntelliJ의 Annotation Processors 항목에서 아래와 같은 조치를 취하면 된다.
+IntelliJ Preferences → Build, Excution, Deployment → Compiler → Annotation Processors → Enable annotation processing 활성화
+
+- 참고 링크
+http://blog.devenjoy.com/?p=383
+
+- 팁
+IntelliJ에서 Lombok을 사용하려면 최초 Lombok plugin을 설치해야 한다.
+File → Settings → Plugins → 'lombok' 검색 → 'Search in repositories' 클릭 → 'Lombok Plugin' 선택 후 설치.
+----------------------------------------------------------------------------------------------------------------------------------------
+# Error
+- 오류 상황
+localhost:8080/posts로 json 타입 데이터 포스트맨으로 전송할 때 오류 발생.
+
+- 오류 메시지
+java.lang.NullPointerException: null
+
+- 원인 및 해결방법
+"/posts"에 mapping되는 경로에서 사용하는 private 필드(멤버 변수 postsRepository)의 값이 null 값이었음.
+"/posts"를 실행해서 데이터를 전달하는 시점에 postsRepository 객체는 아래와 같은 데이터가 주입되어 있어야 한다.
+org.springframework.data.jpa.repository.support.SimpleJpaRepository@6c86f777
+의미는 SimpleJpaRepository 참조 타입이며, 메모리 주소의 해시값인 6c86f777을 가지고 있는 필드(멤버변수) postsRepository.
+postsRepository가 필요한 순간이 있는데, 데이터를 주입하지 못해서(?) 생기는 문제였으므로..
+WebRestController class의 위에 어노테이션 @AllArgConstructor를 선언해줌으로써 해결하였다.
+
+- 의문
+WebRestController의 필드(멤버변수) postsRepository에 데이터를 주입하는 시점은 언제인지?
