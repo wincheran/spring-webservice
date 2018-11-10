@@ -39,3 +39,13 @@ WebRestController class의 위에 어노테이션 @AllArgConstructor를 선언�
 
 - 의문
 WebRestController의 필드(멤버변수) postsRepository에 데이터를 주입하는 시점은 언제인지?
+----------------------------------------------------------------------------------------------------------------------------------------
+# Error
+- 오류 상황
+ext['hibernate.version'] = '5.2.11.Final' 코드를 추가함으로써 정상적으로 서비스가 실행 되지 않는다
+
+- 원인 및 해결 방법
+SpringDataJpa 버전에서는 LocalDate와 LocalDateTime이 Database 저장시 제대로 전환이 안되는 이슈가 있는데,
+이 문제를 고치기 위해 위와 같은 코드를 build.gradle에 추가해준 것이다.
+하지만, 2018/11/10 시점에는 SpringDataJpa의 코어 모듈인 Hibernate core가 5.2.10 보다는 높을 것이기에..
+굳이 저 코드를 선언해줄 필요 없는 것으로 판단해서 지웠음.
