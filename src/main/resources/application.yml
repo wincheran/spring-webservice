@@ -1,9 +1,25 @@
+# Application 실행시, 파라미터로 넘어온게 없으면 active 값을 보게 된다.
 spring:
+  profiles:
+    active: local # 기본 환경 선택
+---
+
+# Local 환경
+spring:
+  profiles: local
+  datasource:
+    data: classpath:data-h2.sql # 시작할 때 실행시킬 script (root 경로가 resources 인 듯.)
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
   h2:
     console:
       enabled: true
-
 ---
+
+# Server 환경
 server:
   port: 8888
 ---
+
